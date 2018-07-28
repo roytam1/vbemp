@@ -1,0 +1,117 @@
+; vbemp.inf                                                                                                               
+;                                                                                                                      
+; Installation inf for the AnaPa Corp Vbemp graphics adapter.                                                                   
+;                                                                                                                      
+                                                                                                                       
+[Version]                                                                                                              
+Signature="$CHICAGO$"                                                                                                
+Provider=%AnaPa%                                                                                                        
+ClassGUID={4D36E968-E325-11CE-BFC1-08002BE10318}                                                                       
+Class=Display                                                                                                          
+                                                                                                                       
+[DestinationDirs]                                                                                                      
+DefaultDestDir   = 11                                                                                                  
+Vbemp.Miniport  = 12  ; drivers                                                                                           
+Vbemp.Display   = 11  ; system32                                                                                          
+                                                                                                                       
+;                                                                                                                      
+; Driver information                                                                                                   
+;                                                                                                                      
+                                                                                                                       
+[Manufacturer]                                                                                                         
+%AnaPa%   = AnaPa.Mfg                                                                                                      
+                                                                                                                       
+[AnaPa.Mfg]                                                                                                               
+%AnaPa% VBE Miniport = Vbemp
+                                                                                                                       
+                                                                                                                       
+;                                                                                                                      
+; General installation section                                                                                         
+;                                                                                                                      
+                                                                                                                       
+[Vbemp]                                                                                                                   
+CopyFiles=Vbemp.Miniport, Vbemp.Display                                                                                      
+                                                                                                                       
+;                                                                                                                      
+; File sections                                                                                                        
+;                                                                                                                      
+                                                                                                                       
+[Vbemp.Miniport]                                                                                                          
+vbemp.sys                                                                                                                 
+                                                                                                                       
+[Vbemp.Display]                                                                                                           
+                                                                                                                       
+                                                                                                                       
+;                                                                                                                      
+; Service Installation                                                                                                 
+;                                                                                                                      
+                                                                                                                       
+[Vbemp.Services]                                                                                                          
+AddService = Vbemp, 0x00000002, Vbemp_Service_Inst, Vbemp_EventLog_Inst                                                         
+                                                                                                                       
+[Vbemp_Service_Inst]                                                                                                      
+ServiceType    = 1                  ; SERVICE_KERNEL_DRIVER                                                            
+StartType      = 1                  ; SERVICE_SYSTEM_START                                                             
+ErrorControl   = 0                  ; SERVICE_ERROR_IGNORE                                                             
+LoadOrderGroup = Video                                                                                                 
+ServiceBinary  = %12%\vbemp.sys                                                                                        
+                                                                                                                       
+[Vbemp_EventLog_Inst]                                                                                                     
+AddReg = Vbemp_EventLog_AddReg                                                                                            
+                                                                                                                       
+[Vbemp_EventLog_AddReg]                                                                                                   
+HKR,,EventMessageFile,0x00020000,"%SystemRoot%\System32\IoLogMsg.dll;%SystemRoot%\System32\drivers\vbemp.sys"  
+HKR,,TypesSupported,0x00010001,7                                                                                       
+                                                                                                                       
+                                                                                                                       
+;                                                                                                                      
+; Software Installation                                                                                                
+;                                                                                                                      
+                                                                                                                       
+[Vbemp.SoftwareSettings]                                                                                                  
+AddReg = Vbemp_SoftwareDeviceSettings                                                                                     
+                                                                                                                       
+[Vbemp_SoftwareDeviceSettings]                                                                                            
+HKR,, InstalledDisplayDrivers,     %REG_MULTI_SZ%, framebuf, vga64k, vga256                                                                
+HKR,, VgaCompatible,               %REG_DWORD%,    0                                                                
+                                                                                                                       
+                                                                                                                       
+[Vbemp.OpenGLSoftwareSettings]                                                                                            
+;HKR,, VBE OpenGL,     %REG_SZ%, vbeopengl.dll
+                                                                                                                       
+                                                                                                                       
+;                                                                                                                      
+; Source file information                                                                                              
+;                                                                                                                      
+                                                                                                                       
+[SourceDisksNames.x86]                                                                                                  
+1 = %DiskId%,,,""                                                                                                  
+                                                                                                                       
+[SourceDisksFiles]                                                                                                     
+vbemp.sys  = 1                                                                                                            
+; framebuf.dll = 1   ; always shipped and preinstalled by NT itself - no need to copy
+; vga64k.dll = 1   ; always shipped and preinstalled by NT itself - no need to copy
+; vga256.dll = 1   ; always shipped and preinstalled by NT itself - no need to copy
+                                                                                                                       
+                                                                                                                       
+                                                                                                                       
+[Strings]                                                                                                              
+                                                                                                                       
+;                                                                                                                      
+; Non-Localizable Strings                                                                                              
+;                                                                                                                      
+                                                                                                                       
+REG_SZ         = 0x00000000                                                                                            
+REG_MULTI_SZ   = 0x00010000                                                                                            
+REG_EXPAND_SZ  = 0x00020000                                                                                            
+REG_BINARY     = 0x00000001                                                                                            
+REG_DWORD      = 0x00010001                                                                                            
+SERVICEROOT    = System\CurrentControlSet\Services                                                                   
+                                                                                                                       
+;                                                                                                                      
+; Localizable Strings                                                                                                  
+;                                                                                                                      
+                                                                                                                       
+DiskId       = "AnaPa Corp Installation DISK (VIDEO)"                                                                        
+GraphAdap    = "Graphics Adapter"                                                                                    
+AnaPa      = "AnaPa Corp"                                                                                                       

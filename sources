@@ -1,0 +1,11 @@
+TARGETNAME=vbemp 
+TARGETPATH=$(BASEDIR)\lib
+TARGETTYPE=DRIVER
+
+TARGETLIBS=$(BASEDIR)\lib\*\$(DDKBUILDENV)\videoprt.lib $(BASEDIR)\lib\*\$(DDKBUILDENV)\ntdll.lib
+
+INCLUDES=..\..\inc
+
+SOURCES=vbemp.c  \
+        vbemp.rc 
+
